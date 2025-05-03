@@ -25,13 +25,13 @@ export default function SearchBox() {
     // 將 div 換成 form，並綁定 onSubmit 事件處理器
     <form
       onSubmit={handleSearchSubmit}
-      className="w-full max-w-lg bg-linear rounded-lg flex items-center px-4 py-3 mb-6"
+      className="ui-card flex items-center px-4 py-3"
     >
       <Search className="h-5 w-5 text-[#960000] mr-2" />
       <input
         type="text"
         placeholder="今天要搜尋什麼呢？"
-        className="bg-transparent border-none outline-none w-full text-black placeholder-[#960000]"
+        className="bg-transparent border-none outline-none w-full text-black placeholder-[#960000] font-noto"
         value={query} // 將 input 的值與 state 綁定
         onChange={(e) => setQuery(e.target.value)} // 當輸入改變時，更新 state
       />

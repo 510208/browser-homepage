@@ -54,7 +54,8 @@ const config: Config = {
       fontFamily: {
         // 定義一個名為 'cyly' 的字體，優先使用 CSS 變數 '--font-cyly'，
         // 如果不可用，則依序使用 'Noto Serif TC' 和通用 'serif' 字體作為後備。
-        cyly: ["var(--font-cyly)", "Noto Serif TC", "serif"],
+        cyly: ["var(--font-noto)", "sans-serif"],
+        noto: ["var(--font-noto)", "Noto Sans TC", "sans-serif"],
       },
       // 自訂圓角大小。這裡也使用了 CSS 變數 '--radius'，
       // 允許基於一個基礎變數來定義不同大小的圓角。

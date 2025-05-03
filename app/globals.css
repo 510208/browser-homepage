@@ -47,4 +47,8 @@ body {
       rgba(218, 168, 148, 0.6) 175%
     );
   }
+
+  .ui-card {
+    @apply w-full max-w-lg bg-linear rounded-lg p-4 mb-6;
+  }
 }
