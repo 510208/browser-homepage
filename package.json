@@ -1,5 +1,9 @@
 {
-  "name": "my-v0-project",
+  "name": "browser-homepage",
+  "author": {
+    "name": "SamHacker",
+    "email": "xux510208@gmail.com"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
