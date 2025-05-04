@@ -73,7 +73,7 @@ export function AddShortcutDialog({ onAddShortcut }: AddShortcutDialogProps) {
         </DialogTrigger>
         <span className="text-xs text-black text-center">新增捷徑</span>
       </div>{" "}
-      <DialogContent>
+      <DialogContent className="ui-card w-100 border-none">
         <DialogHeader>
           <DialogTitle>新增捷徑</DialogTitle>
         </DialogHeader>

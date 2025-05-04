@@ -24,6 +24,12 @@ export interface SunRiseSunSetData {
   sunSet: string; // 日落時間
 }
 
+export interface AqiData {
+  locationName: string; // 地點名稱
+  aqi: string; // 空氣品質指標 (AQI)
+  aqiLevel: string; // AQI 等級
+}
+
 // 2. 從環境變數讀取敏感資訊 (更安全)
 //    你需要在專案根目錄建立 .env.local 檔案來定義這些變數
 //    例如：
@@ -31,6 +37,9 @@ export interface SunRiseSunSetData {
 //    WEATHER_API_KEY="YOUR_CWA_API_KEY"
 const API_ENDPOINT = process.env.CWA_OPENAPI_ENDPOINT;
 const API_KEY = process.env.CWA_OPENAPI_AUTHCODE; // 中央氣象署 API 通常需要授權碼
+
+const MOE_API_ENDPOINT = process.env.MOE_DATA_ENDPOINT;
+const MOE_API_KEY = process.env.MOE_DATA_APIKEY; // 教育部 API 通常需要授權碼
 
 // 3. 使用 fetch 發送請求
 export const fetchWeatherData = async (
@@ -248,5 +257,66 @@ export const fetchSunRiseSunSetData = async (
       sunSet: "N/A",
     };
     return sunRiseSunSetData;
+  }
+};
+
+export const fetchAqiData = async (
+  location: string = "大里" // 允許傳入測站參數，並設定預設值
+): Promise<AqiData> => {
+  if (!MOE_API_ENDPOINT || !MOE_API_KEY) {
+    throw new Error(
+      "Weather API endpoint or key is not configured in environment variables."
+    );
+  }
+
+  // 4. 構建 API URL (根據中央氣象署 API 文件調整參數)
+  const apiUrl = `${MOE_API_ENDPOINT}/aqx_p_432?format=json&limit=5&filters=SiteName,EQ,${encodeURIComponent(
+    location
+  )}&api_key=${MOE_API_KEY}`; // 範例：請求 AQI 資料
+
+  try {
+    // 5. 使用 fetch 並設定 Next.js 快取策略 (例如：每小時重新驗證)
+    const response = await fetch(apiUrl, { next: { revalidate: 3600 } });
+    // console.log("API URL:", apiUrl); // 確認 API URL 是否正確
+    // console.log("API Response:", response); // 確認 API 回應狀態
+
+    if (!response.ok) {
+      // 處理 API 回應錯誤
+      throw new Error(
+        `Failed to fetch AQI data: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    // console.log("API Data:", data); // 確認 API 回應資料結構
+
+    if (data.records && data.records[0]) {
+      // 提取地點名稱
+      const locationName = `${data.records[0].county} ${data.records[0].sitename}`;
+      console.log("Location Name:", locationName); // 確認地點名稱是否正確
+
+      // 提取 AQI 數值和等級，直接取用第一個時間點的資料
+      const aqiData = data.records[0].aqi;
+      console.log("AQI Data:", aqiData); // 確認 AQI 數值是否正確
+
+      const aqiLevelData = data.records[0].status;
+      console.log("AQI Level Data:", aqiLevelData); // 確認 AQI 等級是否正確
+      // 將提取的資料組合成 AqiData 物件
+      const respAqiData: AqiData = {
+        locationName,
+        aqi: aqiData, // AQI 數值
+        aqiLevel: aqiLevelData, // AQI 等級
+      };
+      return respAqiData; // 返回組合好的資料
+    } else if (data.records && data.records[0].aqi) {
+      // 處理沒有 AQI 的情況
+      throw new Error("No AQI data found in API response");
+    } else {
+      throw new Error("Unexpected API response structure");
+    }
+  } catch (error) {
+    console.error("Error fetching AQI data:", error);
+    // 重新拋出錯誤或回傳一個錯誤狀態，讓呼叫者知道出錯了
+    throw error;
   }
 };

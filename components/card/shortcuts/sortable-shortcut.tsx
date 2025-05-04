@@ -1,60 +1,79 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { X, GripVertical, Edit2 } from "lucide-react"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { type Shortcut, getDomain } from "./types"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { X, GripVertical, Edit2 } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { type Shortcut, getDomain } from "./types";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface SortableShortcutProps {
-  shortcut: Shortcut
-  onDelete: (id: string) => void
-  onEdit: (id: string, name: string, url: string) => void
+  shortcut: Shortcut;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, name: string, url: string) => void;
 }
 
-export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcutProps) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+export function SortableShortcut({
+  shortcut,
+  onDelete,
+  onEdit,
+}: SortableShortcutProps) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editedShortcut, setEditedShortcut] = useState({
     name: shortcut.name,
     url: shortcut.url,
-  })
+  });
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: shortcut.id,
-  })
+  });
 
-  const domain = getDomain(shortcut.url)
-  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+  const domain = getDomain(shortcut.url);
+  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     zIndex: isDragging ? 10 : 1,
     opacity: isDragging ? 0.8 : 1,
-  }
+  };
 
   const handleEditSubmit = () => {
     if (editedShortcut.name && editedShortcut.url) {
       // 確保 URL 有 http:// 或 https:// 前綴
-      let url = editedShortcut.url
+      let url = editedShortcut.url;
       if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "https://" + url
+        url = "https://" + url;
       }
 
-      onEdit(shortcut.id, editedShortcut.name, url)
-      setIsEditDialogOpen(false)
+      onEdit(shortcut.id, editedShortcut.name, url);
+      setIsEditDialogOpen(false);
     }
-  }
+  };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative flex flex-col items-center group ${isDragging ? "cursor-grabbing" : ""}`}
+      className={`relative flex flex-col items-center group ${
+        isDragging ? "cursor-grabbing" : ""
+      }`}
     >
       {/* 刪除按鈕 - 右上角 */}
       <button
@@ -84,7 +103,7 @@ export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcu
             <Edit2 className="w-3 h-3 text-white" />
           </button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="ui-card w-100 border-none">
           <DialogHeader>
             <DialogTitle>編輯捷徑</DialogTitle>
           </DialogHeader>
@@ -96,7 +115,9 @@ export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcu
               <Input
                 id="edit-url"
                 value={editedShortcut.url}
-                onChange={(e) => setEditedShortcut({ ...editedShortcut, url: e.target.value })}
+                onChange={(e) =>
+                  setEditedShortcut({ ...editedShortcut, url: e.target.value })
+                }
                 className="col-span-3"
                 placeholder="https://"
               />
@@ -108,13 +129,18 @@ export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcu
               <Input
                 id="edit-name"
                 value={editedShortcut.name}
-                onChange={(e) => setEditedShortcut({ ...editedShortcut, name: e.target.value })}
+                onChange={(e) =>
+                  setEditedShortcut({ ...editedShortcut, name: e.target.value })
+                }
                 className="col-span-3"
               />
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditDialogOpen(false)}
+            >
               取消
             </Button>
             <Button onClick={handleEditSubmit}>儲存</Button>
@@ -131,7 +157,7 @@ export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcu
         onClick={(e) => {
           // 如果正在拖動，阻止點擊事件
           if (isDragging) {
-            e.preventDefault()
+            e.preventDefault();
           }
         }}
       >
@@ -141,13 +167,14 @@ export function SortableShortcut({ shortcut, onDelete, onEdit }: SortableShortcu
           className="w-6 h-6 object-contain"
           onError={(e) => {
             // 如果圖示載入失敗，顯示首字母
-            e.currentTarget.style.display = "none"
-            e.currentTarget.parentElement!.innerHTML =
-              `<div class="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-full text-gray-700 font-bold">${shortcut.name.charAt(0)}</div>`
+            e.currentTarget.style.display = "none";
+            e.currentTarget.parentElement!.innerHTML = `<div class="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-full text-gray-700 font-bold">${shortcut.name.charAt(
+              0
+            )}</div>`;
           }}
         />
       </a>
       <span className="text-xs text-black text-center">{shortcut.name}</span>
     </div>
-  )
+  );
 }

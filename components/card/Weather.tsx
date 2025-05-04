@@ -2,6 +2,7 @@ import Image from "next/image";
 import {
   fetchSunRiseSunSetData,
   fetchWeatherData,
+  fetchAqiData,
 } from "@/lib/weather/weather";
 import {
   Dialog,
@@ -21,6 +22,7 @@ import {
   Frown,
   Laugh,
   Meh,
+  Satellite,
   Smile,
   Sunrise,
   Sunset,
@@ -39,6 +41,7 @@ export default async function Weather() {
   // const lineChartBg = "/background/line-chart-placeholder.svg";
   const weatherData = await fetchWeatherData(); // 這裡可以傳入實際的地點參數
   const sunRiseSunSetData = await fetchSunRiseSunSetData(); // 這裡可以傳入實際的地點參數
+  const aqiData = await fetchAqiData(); // 這裡可以傳入實際的地點參數
 
   return (
     <Dialog>
@@ -49,6 +52,7 @@ export default async function Weather() {
       <WeatherDialog
         weatherData={weatherData}
         sunRiseSunSet={sunRiseSunSetData}
+        aqiData={aqiData}
       />
     </Dialog>
   );
@@ -58,11 +62,13 @@ export default async function Weather() {
 interface WeatherDialogProps {
   weatherData: any; // Consider using a more specific type if available
   sunRiseSunSet: any; // Consider using a more specific type if available
+  aqiData: any; // Consider using a more specific type if available
 }
 // 彈出的詳細天氣資訊對話框
 export function WeatherDialog({
   weatherData,
   sunRiseSunSet,
+  aqiData,
 }: WeatherDialogProps) {
   // 檢查舒適度指數，並依照指數設定圖示
   let comfortIcon = <Smile className="text-3xl text-[#960000]" />; // 預設圖示
@@ -141,6 +147,16 @@ export function WeatherDialog({
           title="日落時間"
           value={sunRiseSunSet?.sunSet}
           icon={<Sunset />}
+        />
+        <WeatherDetailCard
+          title="空氣品質"
+          value={aqiData?.aqiLevel}
+          icon={<Satellite />}
+        />
+        <WeatherDetailCard
+          title="空氣品質指數"
+          value={aqiData?.aqi}
+          icon={<Satellite />}
         />
         {/* You can add more details similarly */}
         {/* <WeatherDetailCard title="風速" value={weatherData?.windSpeed} unit=" m/s" /> */}
