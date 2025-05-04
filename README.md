@@ -1,6 +1,21 @@
-<center><img src="docs/image/image.png" width="500"></center>
+<img align="center" src="docs/image/image.png" width="500">
 
-<center><h1>SamHacker 的瀏覽器首頁</strong></h1></center>
+<h1 align="center">SamHacker 的瀏覽器首頁</strong></h1>
+
+<p align="center">
+   <a href="https://discord.gg/CWCjhRGJ2e">
+      <img src="https://github.com/user-attachments/assets/b98f0cdb-b224-4cea-a12f-f1a72ecc5260" width="150px">
+   </a>
+   <a href="https://github.com/510208">
+      <img src="https://github.com/user-attachments/assets/f4c073e0-0bde-4d1e-91e9-0b384fc2ca54" width="150px">
+   </a>
+   <a href="https://discordpy.readthedocs.io/">
+      <img src="https://github.com/user-attachments/assets/21ac2c4d-3ad9-44fe-a2ff-40914c3d2e30" width="150px">
+   </a>
+   <a href="https://github.com/510208/cfbot">
+      <img src="https://github.com/user-attachments/assets/5ef90eeb-5127-435f-89ab-e4e1fe46e2ac" width="150px">
+   </a>
+</p>
 
 最近在練習寫 Next.js（好不容易總算學成當然要分享），於是就想起很想改的 Chrome 首頁。起先用 Figma 稍稍打了個版，然後丟給 v0 先幫我把打的版切出來，然後開始東改西改，然後就有了這個。
 
