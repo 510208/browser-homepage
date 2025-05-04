@@ -1,4 +1,4 @@
-<img align="center" src="docs/image/image.png" width="500">
+<p align="center"><img src="docs/image/image.png" width="500"></p>
 
 <h1 align="center">SamHacker 的瀏覽器首頁</strong></h1>
 
