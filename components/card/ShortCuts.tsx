@@ -1,4 +1,4 @@
-export default function ShortCuts() {
+export default function ShortCutsOld() {
   return (
     <div className="w-full max-w-lg rounded-md p-6 mb-10">
       <div className="grid grid-cols-6 gap-4">

@@ -5,7 +5,8 @@ import Clock from "@/components/card/Clock";
 import Quote from "@/components/card/Quote";
 import SearchBox from "@/components/card/SearchBox";
 import Weather from "@/components/card/Weather";
-import ShortCuts from "@/components/card/ShortCuts";
+// import ShortCutsOld from "@/components/card/ShortCuts";
+import Shortcuts from "../components/card/shortcuts";
 
 export default function HomePage() {
   return (
@@ -21,7 +22,7 @@ export default function HomePage() {
         {/* Weather Widget */}
         <Weather />
         {/* Google Shortcuts */}
-        <ShortCuts />
+        <Shortcuts />
         {/* Anime Characters Image */}
         <div className="absolute bottom-0 left-0 w-full flex justify-center -z-1">
           {" "}
