@@ -32,6 +32,28 @@
 - **拖放**: @dnd-kit
 - **表單**: React Hook Form + Zod
 
+## 部署
+
+1. 使用 pnpm 安裝依賴元件
+
+```bash
+$ pnpm install
+```
+
+2. 建立環境變數文件 `.env.local`
+
+```python
+CWA_OPENAPI_AUTHCODE=CWA-23456789-1012-1314-1516-17181920212  # 輸入你的中央氣象局授權碼
+CWA_OPENAPI_ENDPOINT=https://opendata.cwa.gov.tw/api/v1/rest/datastore  # 中央氣象局API根結點，一般保持預設即可
+```
+
+3. 啟動開發環境並啟動測試伺服器（我用的是 vscode）
+
+```bash
+$ code .
+$ pnpm run dev
+```
+
 ## 素材來源
 
 ### 天氣資料
@@ -86,3 +108,7 @@
 | zod Colin           | McDonnell                       | [https://zod.dev/](https://zod.dev/)                                                  |
 
 ![Collabtors](https://contrib.rocks/image?repo=510208/browser-homepage)
+
+```
+
+```
