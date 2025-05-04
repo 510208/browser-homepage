@@ -17,6 +17,14 @@
    </a>
 </p>
 
+<p align="center">
+   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2F510208%2Fbrowser-homepage&env=CWA_OPENAPI_AUTHCODE,CWA_OPENAPI_ENDPOINT,MOE_DATA_APIKEY,MOE_DATA_ENDPOINT&envDescription=%E5%9C%A8%E8%AE%80%E6%88%91%E6%AA%94%E6%A1%88%E4%B8%AD%E6%8F%90%E5%8F%8A%E9%9C%80%E6%96%B0%E5%A2%9E%E7%9A%84%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8&envLink=https%3A%2F%2Fgithub.com%2F510208%2Fbrowser-homepage%2Fblob%2Fmain%2FREADME.md&project-name=samhacker-browser-homepage">
+      <img src="https://vercel.com/button" alt="Deploy with Vercel"/>
+   </a>
+</p>
+
+## 簡介
+
 最近在練習寫 Next.js（好不容易總算學成當然要分享），於是就想起很想改的 Chrome 首頁。起先用 Figma 稍稍打了個版，然後丟給 v0 先幫我把打的版切出來，然後開始東改西改，然後就有了這個。
 
 這是一個使用 Next.js、TypeScript 和 Tailwind CSS 打造的個人化瀏覽器首頁，旨在提供天氣資訊、每日佳句、快速捷徑等功能。
@@ -43,11 +51,24 @@ $ pnpm install
 2. 建立環境變數文件 `.env.local`
 
 ```python
-CWA_OPENAPI_AUTHCODE=CWA-23456789-1012-1314-1516-17181920212  # 輸入你的中央氣象局授權碼
-CWA_OPENAPI_ENDPOINT=https://opendata.cwa.gov.tw/api/v1/rest/datastore  # 中央氣象局API根結點，一般保持預設即可
+CWA_OPENAPI_AUTHCODE=CWA-23456789-1012-1314-1516-17181920212
+CWA_OPENAPI_ENDPOINT=https://opendata.cwa.gov.tw/api/v1/rest/datastore
+MOE_DATA_APIKEY=23456789-1011-1213-1415-161718192021
+MOE_DATA_ENDPOINT=https://data.moenv.gov.tw/api/v2
 ```
 
-3. 啟動開發環境並啟動測試伺服器（我用的是 vscode）
+- `CWA_OPENAPI_AUTHCODE`：你從[中央氣象局開放資料平台](https://opendata.cwa.gov.tw/)申請到的驗證碼
+- `CWA_OPENAPI_ENDPOINT`：中央氣象局開放資料平台的 API 端點，通常保持預設即可（除非氣象局改了 API 端點）
+- `MOE_DATA_APIKEY`：你從[環境部環境資料開放平台](https://data.moenv.gov.tw/)申請到的 API 金鑰
+- `MOE_DATA_ENDPOINT`：環境部環境資料開放平台的 API 端點，通常保持預設即可（除非環境部改了 API 端點）
+
+> [!WARNING]
+> 請記得將上面的驗證碼與金鑰換成你申請的金鑰，否則終端會噴錯誤！
+
+> [!WARNING]
+> 如果將此專案部署於 [Vercel](https://vercel.com/) 等平台上，請記得設定環境變數，而非手動建立 `.env.local` 檔案
+
+1. 啟動開發環境並啟動測試伺服器（我用的是 vscode）
 
 ```bash
 $ code .
