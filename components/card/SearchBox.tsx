@@ -8,6 +8,7 @@ export default function SearchBox() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1); // 追蹤當前選中的建議索引
   const formRef = useRef<HTMLFormElement>(null);
 
   // 當 query 改變時獲取建議
@@ -16,6 +17,7 @@ export default function SearchBox() {
     if (query.trim() === "") {
       setSuggestions([]);
       setShowSuggestions(false);
+      setSelectedIndex(-1); // 重設選中索引
       return;
     }
 
@@ -30,6 +32,7 @@ export default function SearchBox() {
             const data = await response.json();
             setSuggestions(data);
             setShowSuggestions(data.length > 0);
+            setSelectedIndex(-1); // 重設選中索引
           }
         } catch (error) {
           console.error("Failed to fetch suggestions:", error);
@@ -57,6 +60,49 @@ export default function SearchBox() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // 處理鍵盤導航
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || suggestions.length === 0) return;
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        setSelectedIndex((prev) =>
+          prev < suggestions.slice(0, 5).length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        setSelectedIndex((prev) =>
+          prev > 0 ? prev - 1 : suggestions.slice(0, 5).length - 1
+        );
+        break;
+      case "Enter":
+        event.preventDefault();
+        if (
+          selectedIndex >= 0 &&
+          selectedIndex < suggestions.slice(0, 5).length
+        ) {
+          // 如果有選中的建議，使用選中的建議進行搜尋
+          const selectedSuggestion = suggestions[selectedIndex];
+          setQuery(selectedSuggestion);
+          setShowSuggestions(false);
+          const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(
+            selectedSuggestion
+          )}`;
+          window.location.href = searchUrl;
+        } else {
+          // 否則使用當前輸入的內容進行搜尋
+          handleSearchSubmit(event as any);
+        }
+        break;
+      case "Escape":
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        break;
+    }
+  };
 
   // 定義表單提交時執行的函數
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -107,6 +153,7 @@ export default function SearchBox() {
           value={query} // 將 input 的值與 state 綁定
           onChange={(e) => setQuery(e.target.value)} // 當輸入改變時，更新 state
           onFocus={handleInputFocus} // 聚焦時顯示建議（如果有的話）
+          onKeyDown={handleKeyDown} // 處理鍵盤導航
           autoComplete="off" // 關閉瀏覽器預設的自動完成
         />
       </div>
@@ -121,7 +168,11 @@ export default function SearchBox() {
             ) => (
               <li
                 key={index}
-                className="px-4 py-2 cursor-pointer transition-colors duration-200 hover:bg-[#96000013] text-[#960000] font-noto rounded-lg"
+                className={`px-4 py-2 cursor-pointer transition-colors duration-200 text-[#960000] font-noto rounded-lg ${
+                  selectedIndex === index
+                    ? "bg-[#96000020]" // 選中時的背景色
+                    : "hover:bg-[#96000013]" // Hover 時的背景色
+                }`}
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 <div className="flex items-center">
