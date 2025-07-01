@@ -7,6 +7,8 @@ import { HomepageConfig } from "./types/config";
  * - 主題色調設定
  * - 背景圖片設定
  * - 底部裝飾圖片設定
+ *
+ * 配置說明請參考 docs/configuration.md
  */
 export const config: HomepageConfig = {
   // 主題和色調設定
@@ -54,8 +56,10 @@ export const config: HomepageConfig = {
   weatherLocation: {
     /** 天氣所抓取的地點（目前天氣僅支援抓取台灣一個國家，其他國家未來考慮開發）
      * 地點名稱請參考附件三所列的地點名稱
+     * dataCode請查詢對應都市的中央氣象署天氣資料代碼，參考附件三之一所列的
      */
     weatherCity: "大里區",
+    weatherDataCode: "F-D0047-073", // 預設使用中央氣象署的天氣資料代碼
     /** 日出日落所抓取的地點（目前日出日落僅支援抓取台灣一個國家，其他國家未來考慮開發）
      * 地點名稱請參考附件二所列的地點名稱
      */

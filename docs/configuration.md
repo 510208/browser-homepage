@@ -108,6 +108,24 @@ background: {
 }
 ```
 
+### 4. 更換天氣預報目標
+
+如果你所住的地點跟我不同（只支援台灣，且縣市名的臺要用繁體臺而非簡體台）：
+
+```typescript
+  // ...existing code...
+  weatherLocation: {
+    weatherCity: "大里區",
+    weatherDataCode: "F-D0047-073",
+    sunRiseSunSetCity: "臺中市",
+    aqiStation: "大里",
+  },
+```
+
+- `weatherCity`與`weatherDataCode`請參考[附件三（和 3-1）](docs/others/weatherCity.md)
+- `aqiStation`請參考[aqiStation.md](docs/others/aqiStation.md)
+- `sunRiseSunSetCity`請參考[sunRiseSunSetCity.md](docs/others/sunRiseSunSetCity.md)
+
 ## 進階自定義
 
 ### 新增配置選項

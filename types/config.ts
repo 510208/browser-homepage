@@ -47,6 +47,8 @@ export interface BackgroundConfig {
 export interface WeatherLocationConfig {
   /** 天氣目標城市名稱 */
   weatherCity: string | undefined;
+  /** 天氣資料代碼，預設使用中央氣象署的天氣資料代碼 */
+  weatherDataCode: string;
   /** 日出日落目標城市名稱 */
   sunRiseSunSetCity: string | undefined;
   /** AQI目標測站名稱 */

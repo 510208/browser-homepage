@@ -1,6 +1,7 @@
 // lib/weather/weather.ts
 
 import { notDeepEqual } from "assert";
+import config from "@/config";
 
 // 1. 定義預期的天氣資料結構 (根據你的 API 調整)
 export interface WeatherData {
@@ -51,8 +52,16 @@ export const fetchWeatherData = async (
     );
   }
 
+  console.log("Fetching weather data for location:", location); // 確認傳入的地點參數
+
+  let weatherDataCode = config.weatherLocation?.weatherDataCode;
+  if (!weatherDataCode) {
+    // 如果沒有設定 weatherDataCode，則使用預設值
+    weatherDataCode = "F-D0047-073"; // 這是中央氣象署的天氣資料代碼
+  }
+
   // 4. 構建 API URL (根據中央氣象署 API 文件調整參數)
-  const apiUrl = `${API_ENDPOINT}/F-D0047-073?Authorization=${API_KEY}&LocationName=${encodeURIComponent(
+  const apiUrl = `${API_ENDPOINT}/${weatherDataCode}?Authorization=${API_KEY}&LocationName=${encodeURIComponent(
     location
   )}`; // 範例：請求天氣現象、最低溫、最高溫、溫度
 
