@@ -1,8 +1,33 @@
 "use client"; // 標記為 Client Component，因為需要處理互動和狀態
 
 import { useState, FormEvent, useEffect, useRef } from "react"; // 引入更多 React Hooks
-import { Search } from "lucide-react";
-import config from "@/config";
+import { Search } from "lucide-reac              <li
+                key={index}
+                className={`px-4 py-2 cursor-pointer transition-colors duration-200 font-noto rounded-lg ${
+                  selectedIndex === index 
+                    ? '' // 選中時的背景色將透過 style 設定
+                    : '' // Hover 時的背景色將透過 style 設定
+                }`}
+                style={{
+                  color: config.theme.primaryColor,
+                  backgroundColor: selectedIndex === index 
+                    ? `${config.theme.primaryColor}20` 
+                    : 'transparent'
+                }}
+                onMouseEnter={() => {
+                  if (selectedIndex !== index) {
+                    (event.target as HTMLElement).style.backgroundColor = `${config.theme.primaryColor}13`;
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (selectedIndex !== index) {
+                    (event.target as HTMLElement).style.backgroundColor = 'transparent';
+                  }
+                }}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                <div className="flex items-center">
+                  <Search className="h-4 w-4 mr-2" style={{ color: config.theme.primaryColor }} /> config from "@/config";
 
 export default function SearchBox() {
   // 使用 useState 來追蹤輸入框的內容和建議列表
@@ -146,22 +171,20 @@ export default function SearchBox() {
       className="ui-card relative"
     >
       <div className="flex items-center">
-        <Search
-          className="h-5 w-5 mr-2"
-          style={{ color: config.theme.primaryColor }}
-        />
+        <Search className="h-5 w-5 mr-2" style={{ color: config.theme.primaryColor }} />
         <input
           type="text"
           placeholder="今天要搜尋什麼呢？"
-          className="bg-transparent border-none outline-none w-full font-noto search-input"
-          style={{
+          className="bg-transparent border-none outline-none w-full font-noto search-text search-placeholder"
+          style={{ 
             color: config.theme.primaryColor,
-          }}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={handleInputFocus}
-          onKeyDown={handleKeyDown}
-          autoComplete="off"
+            '--tw-placeholder-color': config.theme.primaryColor
+          } as any}
+          value={query} // 將 input 的值與 state 綁定
+          onChange={(e) => setQuery(e.target.value)} // 當輸入改變時，更新 state
+          onFocus={handleInputFocus} // 聚焦時顯示建議（如果有的話）
+          onKeyDown={handleKeyDown} // 處理鍵盤導航
+          autoComplete="off" // 關閉瀏覽器預設的自動完成
         />
       </div>
 
@@ -175,31 +198,15 @@ export default function SearchBox() {
             ) => (
               <li
                 key={index}
-                className={`px-4 py-2 cursor-pointer transition-colors duration-200 font-noto rounded-lg`}
-                style={{
-                  color: config.theme.primaryColor,
-                  backgroundColor:
-                    selectedIndex === index
-                      ? `${config.theme.primaryColor}20`
-                      : "transparent",
-                }}
-                onMouseEnter={(e) => {
-                  if (selectedIndex !== index) {
-                    e.currentTarget.style.backgroundColor = `${config.theme.primaryColor}13`;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (selectedIndex !== index) {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                  }
-                }}
+                className={`px-4 py-2 cursor-pointer transition-colors duration-200 text-[#960000] font-noto rounded-lg ${
+                  selectedIndex === index
+                    ? "bg-[#96000020]" // 選中時的背景色
+                    : "hover:bg-[#96000013]" // Hover 時的背景色
+                }`}
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 <div className="flex items-center">
-                  <Search
-                    className="h-4 w-4 mr-2"
-                    style={{ color: config.theme.primaryColor }}
-                  />
+                  <Search className="h-4 w-4 text-[#960000] mr-2" />
                   {suggestion}
                 </div>
               </li>

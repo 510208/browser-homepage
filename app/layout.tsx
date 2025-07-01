@@ -2,6 +2,7 @@ import type React from "react";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Noto_Sans_TC } from "next/font/google";
+import DynamicStyles from "@/components/DynamicStyles";
 
 const notoSansTC = Noto_Sans_TC({
   subsets: ["latin"],
@@ -21,6 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <DynamicStyles />
+      </head>
       <body suppressHydrationWarning className={`${notoSansTC.className}`}>
         {children}
       </body>
