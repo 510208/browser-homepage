@@ -30,6 +30,7 @@ import {
   Wind,
 } from "lucide-react";
 import WeatherSummary from "./w-compoments/WeatherSummary";
+import config from "@/config";
 
 const isDayTime = new Date().getHours() >= 6 && new Date().getHours() < 18;
 /* const weatherIconBaseUrl = isDayTime
@@ -39,9 +40,21 @@ const isDayTime = new Date().getHours() >= 6 && new Date().getHours() < 18;
 export default async function Weather() {
   // 假設的背景折線圖路徑，你需要提供實際的圖片
   // const lineChartBg = "/background/line-chart-placeholder.svg";
-  const weatherData = await fetchWeatherData(); // 這裡可以傳入實際的地點參數
-  const sunRiseSunSetData = await fetchSunRiseSunSetData(); // 這裡可以傳入實際的地點參數
-  const aqiData = await fetchAqiData(); // 這裡可以傳入實際的地點參數
+  const weatherData = await fetchWeatherData(
+    config.weatherLocation?.weatherCity != null
+      ? config.weatherLocation?.weatherCity
+      : "大里區"
+  ); // 這裡可以傳入實際的地點參數
+  const sunRiseSunSetData = await fetchSunRiseSunSetData(
+    config.weatherLocation?.weatherCity != null
+      ? config.weatherLocation?.sunRiseSunSetCity
+      : "臺中市"
+  ); // 這裡可以傳入實際的地點參數
+  const aqiData = await fetchAqiData(
+    config.weatherLocation?.aqiStation != null
+      ? config.weatherLocation?.aqiStation
+      : "大里"
+  ); // 這裡可以傳入實際的地點參數
 
   return (
     <Dialog>
@@ -92,7 +105,7 @@ export function WeatherDialog({
     }
   }
   return (
-    <DialogContent className="ui-card border-none w-full max-w-2xl bg-[#f5f5f5] p-4">
+    <DialogContent className="ui-card-blured border-none w-full max-w-2xl bg-[#f5f5f5] p-4 backdrop-blur-sm">
       <DialogHeader className="bg-[#826558]/20 rounded-lg p-6">
         {/* 在這裡顯示詳細的天氣資訊 */}
         <DialogTitle className="text-2xl font-bold text-[#250505] ">

@@ -42,6 +42,18 @@ export interface BackgroundConfig {
 }
 
 /**
+ * 天氣地點設定
+ */
+export interface WeatherLocationConfig {
+  /** 天氣目標城市名稱 */
+  weatherCity: string | undefined;
+  /** 日出日落目標城市名稱 */
+  sunRiseSunSetCity: string | undefined;
+  /** AQI目標測站名稱 */
+  aqiStation: string | undefined;
+}
+
+/**
  * 主要配置物件，整合所有其他配置
  */
 export interface HomepageConfig {
@@ -49,4 +61,6 @@ export interface HomepageConfig {
   theme: ThemeConfig;
   /** 背景和底部圖片設定 */
   background: BackgroundConfig;
+  /** 天氣地點設定 */
+  weatherLocation?: WeatherLocationConfig;
 }
