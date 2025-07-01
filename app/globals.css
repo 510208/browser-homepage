@@ -48,6 +48,14 @@ body {
     );
   }
 
+  .bg-linear-fill {
+    background: linear-gradient(
+      180deg,
+      rgba(200, 137, 103, 1) -77%,
+      rgba(218, 168, 148, 1) 175%
+    ) !important;
+  }
+
   .ui-card {
     @apply w-full max-w-lg bg-linear rounded-lg p-4 mb-6;
   }
