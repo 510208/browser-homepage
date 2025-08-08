@@ -151,7 +151,7 @@ export function SortableShortcut({
       {/* 捷徑圖示和名稱 */}
       <a
         href={shortcut.url}
-        target="_blank"
+        target="_self"
         rel="noopener noreferrer"
         className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
         onClick={(e) => {
