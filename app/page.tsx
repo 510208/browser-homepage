@@ -16,7 +16,7 @@ export default function HomePage() {
       <DynamicStyles />
       <div
         className="relative min-h-screen flex flex-col items-center pt-20 px-4 text-black pb-[180px]"
-        style={{ backgroundColor: config.background.main }}
+        style={{ background: config.background.main }}
       >
         {" "}
         <Clock />
