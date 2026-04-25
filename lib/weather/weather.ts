@@ -1,6 +1,5 @@
 // lib/weather/weather.ts
 
-import { notDeepEqual } from "assert";
 import config from "@/config";
 
 // 1. 定義預期的天氣資料結構 (根據你的 API 調整)
@@ -30,6 +29,35 @@ export interface AqiData {
   aqi: string; // 空氣品質指標 (AQI)
   aqiLevel: string; // AQI 等級
 }
+
+interface CwaElementValue {
+  [key: string]: string | undefined;
+}
+
+interface CwaWeatherTime {
+  ElementValue: CwaElementValue[];
+}
+
+interface CwaWeatherElement {
+  ElementName: string;
+  Time: CwaWeatherTime[];
+}
+
+const getElementValue = (
+  weatherElements: CwaWeatherElement[],
+  elementName: string,
+  key: string,
+): string => {
+  const value =
+    weatherElements.find((element) => element.ElementName === elementName)?.Time?.[0]
+      ?.ElementValue?.[0]?.[key];
+
+  if (typeof value !== "string") {
+    throw new Error(`Missing ${elementName} -> ${key} in API response`);
+  }
+
+  return value;
+};
 
 // 2. 從環境變數讀取敏感資訊 (更安全)
 //    你需要在專案根目錄建立 .env.local 檔案來定義這些變數
@@ -94,73 +122,79 @@ export const fetchWeatherData = async (
       console.log("Location Name:", locationName); // 確認地點名稱是否正確
 
       // 提取weatherElement陣列
-      const weatherElement =
-        data.records.Locations[0].Location[0].WeatherElement;
+      const weatherElement = data.records.Locations[0].Location[0]
+        .WeatherElement as CwaWeatherElement[];
 
       // 提取天氣現象，直接取用第一個時間點的資料
-      const weatherPhenomenonData = weatherElement.find(
-        (element: any) => element.ElementName === "天氣現象",
-      ).Time[0].ElementValue[0].Weather;
+      const weatherPhenomenonData = getElementValue(
+        weatherElement,
+        "天氣現象",
+        "Weather",
+      );
       console.log("Weather Phenomenon Data:", weatherPhenomenonData); // 確認天氣現象是否正確
 
       // 提取天氣現象代碼，以便取得對應的圖示
-      const weatherPhenomenonCode = weatherElement.find(
-        (element: any) => element.ElementName === "天氣現象",
-      ).Time[0].ElementValue[0].WeatherCode;
+      const weatherPhenomenonCode = getElementValue(
+        weatherElement,
+        "天氣現象",
+        "WeatherCode",
+      );
       console.log("Weather Phenomenon Code:", weatherPhenomenonCode); // 確認天氣現象代碼是否正確
 
       // 提取溫度，直接取用第一個時間點的資料
-      const temperatureData = weatherElement.find(
-        (element: any) => element.ElementName === "溫度",
-      ).Time[0].ElementValue[0].Temperature;
+      const temperatureData = getElementValue(weatherElement, "溫度", "Temperature");
       console.log("Temperature Data:", temperatureData); // 確認溫度資料是否正確
 
       // 提取體感溫度，直接取用第一個時間點的資料
-      const apparentTemperatureData = weatherElement.find(
-        (element: any) => element.ElementName === "體感溫度",
-      ).Time[0].ElementValue[0].ApparentTemperature;
+      const apparentTemperatureData = getElementValue(
+        weatherElement,
+        "體感溫度",
+        "ApparentTemperature",
+      );
       console.log("Apparent Temperature Data:", apparentTemperatureData); // 確認體感溫度資料是否正確
 
       // 提取相對溼度，直接取用第一個時間點的資料
-      const relativeHumidityData = weatherElement.find(
-        (element: any) => element.ElementName === "相對濕度",
-      ).Time[0].ElementValue[0].RelativeHumidity;
+      const relativeHumidityData = getElementValue(
+        weatherElement,
+        "相對濕度",
+        "RelativeHumidity",
+      );
       console.log("Relative Humidity Data:", relativeHumidityData); // 確認相對濕度資料是否正確
 
       // 提取風速，直接取用第一個時間點的資料
-      const windSpeedData = weatherElement.find(
-        (element: any) => element.ElementName === "風速",
-      ).Time[0].ElementValue[0].WindSpeed;
+      const windSpeedData = getElementValue(weatherElement, "風速", "WindSpeed");
       console.log("Wind Speed Data:", windSpeedData); // 確認風速資料是否正確
 
       // 提取風速（蒲福風級），直接取用第一個時間點的資料
-      const bfScaleData = weatherElement.find(
-        (element: any) => element.ElementName === "風速",
-      ).Time[0].ElementValue[0].BeaufortScale;
+      const bfScaleData = getElementValue(weatherElement, "風速", "BeaufortScale");
       console.log("Wind Scale Data:", bfScaleData); // 確認風速（蒲福風級）資料是否正確
 
       // 提取風向，直接取用第一個時間點的資料
-      const windDirectionData = weatherElement.find(
-        (element: any) => element.ElementName === "風向",
-      ).Time[0].ElementValue[0].WindDirection;
+      const windDirectionData = getElementValue(weatherElement, "風向", "WindDirection");
       console.log("Wind Direction Data:", windDirectionData); // 確認風向資料是否正確
 
       // 提取舒適度指數，直接取用第一個時間點的資料
-      const comfortIndexData = weatherElement.find(
-        (element: any) => element.ElementName === "舒適度指數",
-      ).Time[0].ElementValue[0].ComfortIndex;
+      const comfortIndexData = getElementValue(
+        weatherElement,
+        "舒適度指數",
+        "ComfortIndex",
+      );
       console.log("Comfort Index Data:", comfortIndexData); // 確認舒適度指數資料是否正確
 
       // 提取降雨機率，直接取用第一個時間點的資料
-      const rainProbabilityData = weatherElement.find(
-        (element: any) => element.ElementName === "3小時降雨機率",
-      ).Time[0].ElementValue[0].ProbabilityOfPrecipitation;
+      const rainProbabilityData = getElementValue(
+        weatherElement,
+        "3小時降雨機率",
+        "ProbabilityOfPrecipitation",
+      );
       console.log("Rain Probability Data:", rainProbabilityData); // 確認降雨機率資料是否正確
 
       // 提取天氣預報綜合描述，直接取用第一個時間點的資料
-      const WeatherDescriptionData = weatherElement.find(
-        (element: any) => element.ElementName === "天氣預報綜合描述",
-      ).Time[0].ElementValue[0].WeatherDescription;
+      const WeatherDescriptionData = getElementValue(
+        weatherElement,
+        "天氣預報綜合描述",
+        "WeatherDescription",
+      );
       console.log("Weather Description Data:", WeatherDescriptionData); // 確認天氣預報綜合描述資料是否正確
 
       // 將提取的資料組合成 WeatherData 物件

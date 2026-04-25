@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   fetchSunRiseSunSetData,
   fetchWeatherData,
@@ -26,16 +25,16 @@ import {
   Smile,
   Sunrise,
   Sunset,
-  Underline,
   Wind,
 } from "lucide-react";
 import WeatherSummary from "./w-compoments/WeatherSummary";
 import config from "@/config";
 
-const isDayTime = new Date().getHours() >= 6 && new Date().getHours() < 18;
-/* const weatherIconBaseUrl = isDayTime
-    ? "https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/"
-    : "https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/night/";  */
+import type {
+  WeatherData,
+  SunRiseSunSetData,
+  AqiData,
+} from "@/lib/weather/weather";
 
 export default async function Weather() {
   // 假設的背景折線圖路徑，你需要提供實際的圖片
@@ -43,17 +42,17 @@ export default async function Weather() {
   const weatherData = await fetchWeatherData(
     config.weatherLocation?.weatherCity != null
       ? config.weatherLocation?.weatherCity
-      : "大里區"
+      : "大里區",
   ); // 這裡可以傳入實際的地點參數
   const sunRiseSunSetData = await fetchSunRiseSunSetData(
     config.weatherLocation?.weatherCity != null
       ? config.weatherLocation?.sunRiseSunSetCity
-      : "臺中市"
+      : "臺中市",
   ); // 這裡可以傳入實際的地點參數
   const aqiData = await fetchAqiData(
     config.weatherLocation?.aqiStation != null
       ? config.weatherLocation?.aqiStation
-      : "大里"
+      : "大里",
   ); // 這裡可以傳入實際的地點參數
 
   return (
@@ -73,9 +72,9 @@ export default async function Weather() {
 
 // Define the props interface for WeatherDialog
 interface WeatherDialogProps {
-  weatherData: any; // Consider using a more specific type if available
-  sunRiseSunSet: any; // Consider using a more specific type if available
-  aqiData: any; // Consider using a more specific type if available
+  weatherData: WeatherData; // Consider using a more specific type if available
+  sunRiseSunSet: SunRiseSunSetData; // Consider using a more specific type if available
+  aqiData: AqiData; // Consider using a more specific type if available
 }
 // 彈出的詳細天氣資訊對話框
 export function WeatherDialog({
