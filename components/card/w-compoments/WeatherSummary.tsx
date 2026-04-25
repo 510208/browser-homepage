@@ -1,5 +1,5 @@
 import { WeatherData } from "@/lib/weather/weather";
-import { JSX, ComponentProps } from "react";
+import { JSX } from "react";
 import Image from "next/image";
 
 const isDayTime = new Date().getHours() >= 6 && new Date().getHours() < 18;
