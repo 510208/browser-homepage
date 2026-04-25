@@ -1,4 +1,4 @@
-// "use server";
+"use client";
 
 // 定義 API 回應的結構 (可選，但建議增加型別安全)
 interface HitokotoResponse {
@@ -20,6 +20,7 @@ interface HitokotoResponse {
 import * as OpenCC from "opencc-js";
 // 匯入自訂字體以安裝Chenyuluoyen.ttf
 import localFont from "next/font/local";
+import { useEffect, useState } from "react";
 
 const cyly = localFont({
   src: "../../public/fonts/Chenyuluoyen.ttf",
@@ -27,16 +28,32 @@ const cyly = localFont({
   variable: "--font-cyly",
 });
 
-export default async function Quote() {
-  // 在伺服器端發送請求
-  // 使用 cache: 'no-store' 確保每次請求都獲取新的名言
-  const res = await fetch("https://v1.hitokoto.cn/", {
-    next: { revalidate: 3600 },
-  });
-  // const res = await fetch("https://v1.hitokoto.cn/", { cache: "no-cache" });
+export default function Quote() {
+  const [quoteData, setQuoteData] = useState<HitokotoResponse | null>(null);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await fetch("https://v1.hitokoto.cn/", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data: HitokotoResponse = await response.json();
+        setQuoteData(data);
+      } catch (error) {
+        console.error("Failed to fetch quote:", error);
+        setQuoteData(null);
+      }
+    };
+
+    fetchQuote();
+  }, []);
+
   const converter = OpenCC.Converter({ from: "cn", to: "tw" });
-  // 基本的錯誤處理：如果請求失敗，顯示預設文字
-  const quoteData: HitokotoResponse | null = res.ok ? await res.json() : null;
 
   return (
     <p className={`${cyly.className} text-black mb-8 text-[26px]`}>
