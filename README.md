@@ -20,6 +20,9 @@
    </a>
 </p>
 
+> [!INFO]
+> 這個專案已經終止維護，新的版本改用Vue 3開發，為了儲存庫的乾淨起見，已經移到新儲存庫
+> [https://github.com/510208/browser-homepage-next](https://github.com/510208/browser-homepage-next)
 ## 🖊️ 簡介
 
 最近在練習寫 Next.js（好不容易總算學成當然要分享），於是就想起很想改的 Chrome 首頁。起先用 Figma 稍稍打了個版，然後丟給 v0 先幫我把打的版切出來，然後開始東改西改，然後就有了這個。
